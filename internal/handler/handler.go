@@ -9,7 +9,10 @@ import (
 
 type Service interface {
 	Create(ctx context.Context, req dto.IncidentRequest) (dto.IncidentResponse, error)
-
+	GetIncidentByID(ctx context.Context, id int) (*dto.IncidentResponse, error)
+	GetAllIncidents(ctx context.Context, searchActive bool) (*dto.IncidentListResponse)
+	Update(ctx context.Context, id int, req dto.IncidentRequest) error
+	Delete(ctx context.Context, id int) error
 }
 
 type Handler struct {
@@ -34,10 +37,10 @@ func (h *Handler) InitRouter() *gin.Engine {
 		incidents := api.Group("/incidents")
 		{
 			incidents.POST("/", h.CreateIncident)	
-			incidents.GET("/",)
-			incidents.GET("/:id")
-			incidents.PUT("/:id", )
-			incidents.DELETE("/:id", )
+			incidents.GET("/", h.GetAllIncidents)
+			incidents.GET("/:id", h.GetIncident)
+			incidents.PUT("/:id", h.UpdateIncident)
+			incidents.DELETE("/:id", h.DeleteIncident)
 
 			incidents.POST("/stats")
 		}

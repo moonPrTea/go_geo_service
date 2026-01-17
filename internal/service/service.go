@@ -7,6 +7,10 @@ import (
 
 type Repository interface {
 	CreateIncident(i *model.Incident) error
+	GetIncidentByID(id int) (*model.Incident, error)
+	FindAllIncidents(searchActive bool) ([]model.Incident, error)
+	UpdateIncident(i *model.Incident) error
+	DeleteIncident(id int) error
 }
 
 type Service struct {
