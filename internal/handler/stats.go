@@ -9,8 +9,8 @@ import (
 func (h Handler) GetRequestStatistic(c *gin.Context) {
 	countIDs, err := h.service.GetRequestStatistic(c, config.New().StatsWindow)
 	if err != nil {
-		c.JSON(500, err)
+		c.IndentedJSON(500, err)
 		return
 	}
-	c.JSON(200, countIDs)
+	c.IndentedJSON(200, countIDs)
 }
