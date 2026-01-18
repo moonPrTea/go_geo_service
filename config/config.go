@@ -22,9 +22,9 @@ func New() *Config{
     
     return &Config{
         AppPort:      getEnv("APP_PORT", "8080"),
-        DbURL:        getEnv("DB_URL", ""),
+        DbURL:        getEnv("DB_URL", "dbUrl"),
         RedisAddress: getEnv("REDIS_ADDRESS", "host:port"),
-        APIKey:       getEnv("API_KEY", ""),
+        APIKey:       getEnv("API_KEY", "Key"),
         WebhookURL:   getEnv("WEBHOOK_URL", ""),
         StatsWindow:  getIntValue("STATS_TIME_WINDOW_MINUTES", 60),
     }

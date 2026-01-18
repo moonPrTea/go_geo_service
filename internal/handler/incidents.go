@@ -28,6 +28,7 @@ func (h *Handler) UpdateIncident(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid value for id"})
+		return
 	}
 
 	var req dto.IncidentRequest
@@ -39,6 +40,7 @@ func (h *Handler) UpdateIncident(c *gin.Context) {
 
 	if err := h.service.Update(c, id, req); err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.JSON(200, gin.H{"message": "Incident data have successfully updated"})
@@ -48,10 +50,12 @@ func (h *Handler) DeleteIncident(c *gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid value for id"})
+		return
 	}
 
 	if err := h.service.Delete(c, id); err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
+		return
 	}
 	c.JSON(200, gin.H{"message": "Incident have successfully deleted"})
 
@@ -61,11 +65,13 @@ func (h *Handler) GetIncident(c * gin.Context) {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		c.JSON(400, gin.H{"error": "Invalid value for id"})
+		return
 	}	
 
 	response, err := h.service.GetIncidentByID(c, id)
 	if err != nil {
 		c.JSON(404, gin.H{"error": "No incident was found"})
+		return
 	}
 	c.JSON(200, response)
 }

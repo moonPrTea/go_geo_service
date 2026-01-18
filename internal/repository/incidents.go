@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/moonPrTea/go_geo_service.git/internal/model"
 )
 
@@ -19,6 +21,7 @@ func (r Repository) UpdateIncident(i *model.Incident) error {
 		UPDATE incidents
 		SET title = $1, lat = $2, lng = $3, radius = $4, active = $5, updated_at = NOW()
 		WHERE id = $6
+		RETURNING id, created_at, updated_at
 	`, i.Title, i.Latitude, i.Longitude, i.Radius, i.Active, i.ID,
 	).Scan(&i.ID, &i.CreatedAt, &i.UpdatedAt)
 	
@@ -38,17 +41,21 @@ func (r Repository) GetIncidentByID(id int) (*model.Incident, error) {
         SELECT id, title, lat, lng, radius, active, created_at, updated_at
         FROM incidents WHERE id = $1
     `
+
+	// exec query and read its data
 	err := r.db.QueryRow(
 		query, id,
 	).Scan(
-		&incident.ID, &incident.Radius, &incident.Latitude, 
+		&incident.ID, &incident.Title, &incident.Latitude, 
 		&incident.Longitude, &incident.Radius, &incident.Active,
 		&incident.CreatedAt, &incident.UpdatedAt, 
 	)
+	fmt.Println(incident)
 
 	if err != nil {
 		return nil, err
 	}
+	
 	return &incident, nil
 }
 
@@ -86,4 +93,42 @@ func (r Repository) FindAllIncidents(searchActive bool) ([]model.Incident, error
 		incidents = append(incidents, i)
 	}
 	return incidents, nil
+}
+
+// find nearest incidents
+func (r Repository) FindNearbyIncidents(latitude, longitude, radius float64) ([]model.Incident, error) {
+	incidentRows, err := r.db.Query(`
+		SELECT id, title, lat, lng, radius, active
+		FROM incidents
+		WHERE active = true 
+		AND ST_DWithin(
+		ST_SetSRID(ST_MakePoint(lng, lat), 4326)::geography,
+		ST_SetSRID(ST_MakePoint($2, $1), 4326)::geography,
+		radius + $3 * 1000
+        )
+	`, latitude, longitude, radius)
+
+	if err != nil {
+		return nil, err
+	}
+	defer incidentRows.Close()
+
+	var incidents []model.Incident
+
+	for incidentRows.Next() {
+		var i model.Incident
+		err := incidentRows.Scan(
+			&i.ID, &i.Title, &i.Latitude, &i.Longitude, &i.Radius, &i.Active,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		// add data to slice
+		incidents = append(incidents, i)
+
+	}
+
+	return incidents, err
 }
