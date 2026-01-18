@@ -1,0 +1,311 @@
+{
+  "info": {
+    "_postman_id": "24b4e6af-6855-4e46-9e9c-2230cce691f9",
+    "name": "Geo gin api",
+    "description": "**Example requests for test-task api**\n\nBefore using, make sure that .env exists and has all obligatory variables. Also add value for {{API_KEY}} that is used in response headers as secret key",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "41642061"
+  },
+  "item": [
+    {
+      "name": "health request",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"new incident.Incredible\",\n    \"lat\": 14.2,\n    \"lng\": 13.1,\n    \"radius\": 1,\n    \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{local default gin}}/api/v1/system/health",
+          "host": [
+            "{{local default gin}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "system",
+            "health"
+          ]
+        },
+        "description": "Health request to check system operation"
+      },
+      "response": []
+    },
+    {
+      "name": "get all incidents",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"new incident.Incredible\",\n    \"lat\": 14.2,\n    \"lng\": 13.1,\n    \"radius\": 1,\n    \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{local default gin}}/api/v1/incidents/",
+          "host": [
+            "{{local default gin}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "incidents",
+            ""
+          ]
+        },
+        "description": "This response returns all incidents that were created by all users.\n\n| param_name | description |\n| --- | --- |\n| active | only active incidents will be returned |"
+      },
+      "response": []
+    },
+    {
+      "name": "create incident",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"new incident.Incredible\",\n    \"lat\": 14.2,\n    \"lng\": 13.1,\n    \"radius\": 1,\n    \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{local default gin}}/api/v1/incidents/",
+          "host": [
+            "{{local default gin}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "incidents",
+            ""
+          ]
+        },
+        "description": "Request to create new incident"
+      },
+      "response": []
+    },
+    {
+      "name": "update incident by id",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"work epidemic, holidays r over\",\n    \"lat\": 14.2,\n    \"lng\": 13.1,\n    \"radius\": 1,\n    \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/v1/incidents/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "incidents",
+            "2"
+          ]
+        },
+        "description": "Request to update incident with current id"
+      },
+      "response": []
+    },
+    {
+      "name": "get incident by id",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8080/api/v1/incidents/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "api",
+            "v1",
+            "incidents",
+            "2"
+          ]
+        },
+        "description": "Get information about the incident with the transmitted id"
+      },
+      "response": []
+    },
+    {
+      "name": "delete incident by id",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{local default gin}}/api/v1/incidents/3",
+          "host": [
+            "{{local default gin}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "incidents",
+            "3"
+          ]
+        },
+        "description": "Delete information about the incident with the transmitted id"
+      },
+      "response": []
+    },
+    {
+      "name": "get stats",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{local default gin}}/api/v1/incidents/stats",
+          "host": [
+            "{{local default gin}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "incidents",
+            "stats"
+          ]
+        },
+        "description": "Get a unique number of user requests in n minutes"
+      },
+      "response": []
+    },
+    {
+      "name": "check location",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"lat\": 13.1,\n    \"lng\": 14.2,\n    \"user_id\": \"hY*tg3u219hsa\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{local default gin}}/api/v1/location/check",
+          "host": [
+            "{{local default gin}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "location",
+            "check"
+          ]
+        },
+        "description": "Check the area based on the transmitted longitude and latitude data. By default, the radius is 5 km"
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "local default gin",
+      "value": ""
+    },
+    {
+      "key": "API_KEY",
+      "value": "",
+      "type": "default"
+    }
+  ]
+}
