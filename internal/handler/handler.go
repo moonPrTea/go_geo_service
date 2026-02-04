@@ -1,36 +1,20 @@
 package handler
 
 import (
-	"context"
-
 	"github.com/gin-gonic/gin"
 	"github.com/moonPrTea/go_geo_service.git/config"
-	"github.com/moonPrTea/go_geo_service.git/internal/dto"
 	"github.com/moonPrTea/go_geo_service.git/internal/handler/middleware"
+	"github.com/moonPrTea/go_geo_service.git/internal/service"
 )
 
-type Service interface {
-	Create(ctx context.Context, req dto.IncidentRequest) (dto.IncidentResponse, error)
-	GetIncidentByID(ctx context.Context, id int) (*dto.IncidentResponse, error)
-	GetAllIncidents(ctx context.Context, searchActive bool) (*dto.IncidentListResponse)
-	Update(ctx context.Context, id int, req dto.IncidentRequest) error
-	Delete(ctx context.Context, id int) error
-
-	// stats
-	GetRequestStatistic(ctx context.Context, windowTimeMinutes int) (*dto.StatsResponse, error)
-
-	// check location and return danger zones
-	CheckLocation(ctx context.Context, req dto.CheckLocationRequest) (*dto.CheckLocationResponse, error)
-}
 
 type Handler struct {
-	service Service
+	service *service.Service
 }
 
-func New(service Service) Handler {
-	return Handler{
-		service: service,
-	}
+
+func New(s *service.Service) *Handler {
+	return &Handler{service: s}
 }
 
 

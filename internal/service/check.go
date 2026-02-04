@@ -9,7 +9,7 @@ import (
 )
 
 // check location by (lat, lng) and push webhook
-func (s Service) CheckLocation (ctx context.Context, req dto.CheckLocationRequest) (*dto.CheckLocationResponse, error) {
+func (s *Service)CheckLocation (ctx context.Context, req dto.CheckLocationRequest) (*dto.CheckLocationResponse, error) {
 	s.Repository.SaveCheck(req.UserId, req.Latitude, req.Longitude)
 
 	var radius = 5.0
@@ -57,7 +57,7 @@ func (s Service) CheckLocation (ctx context.Context, req dto.CheckLocationReques
 }
 
 
-func (s Service) GetRequestStatistic(ctx context.Context, windowTimeMinutes int) (*dto.StatsResponse, error) {
+func (s *Service) GetRequestStatistic(ctx context.Context, windowTimeMinutes int) (*dto.StatsResponse, error) {
 	userCount, err := s.Repository.GetStats(windowTimeMinutes)
 	if err != nil {
 		return nil, err

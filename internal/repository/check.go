@@ -12,7 +12,7 @@ func (r Repository) GetStats(minutes int) (int, error) {
 	query := `
 		SELECT COUNT(DISTINCT user_id) 
 		FROM location_checks
-		WHERE created_at >= NOW() -  make_interval(mins => $1)
+		WHERE created_at >= NOW() - make_interval(mins => $1)
 	`
 	err := r.db.QueryRow(query, minutes).Scan(&count)
 

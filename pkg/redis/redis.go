@@ -11,12 +11,11 @@ type Queue struct {
 
 func Init(addr string) *Queue {
 	rdb := redis.NewClient(&redis.Options{Addr: addr})
-	return &Queue{Client: rdb}
+	return &Queue{
+		Client: rdb,
+	}
 }
 
-func (q *Queue) Enqueue(payload string) {
-	q.Client.RPush(context.Background(), "webhooks", payload)
-}
 
 //waiting for new event
 func (q *Queue) Pop() (string, error) {
@@ -35,6 +34,7 @@ func (q *Queue) Pop() (string, error) {
 func (q *Queue) Push(payload string) error {
     context := context.Background()
     err := q.Client.RPush(context, "webhooks", payload).Err()
+	
     if err != nil {
         return err
     }
