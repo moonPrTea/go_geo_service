@@ -17,7 +17,7 @@ func main() {
 	})
 
 	log.Println("webhook listening on :9090 port")
-
-	// waiting for all messages
+	
+	// waiting for all request
 	log.Fatal(http.ListenAndServe(":9090", nil))
 }

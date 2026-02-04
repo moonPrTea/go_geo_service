@@ -8,7 +8,7 @@ import (
 	"github.com/moonPrTea/go_geo_service.git/internal/model"
 )
 
-func (s Service) Create(ctx context.Context, req dto.IncidentRequest) (dto.IncidentResponse, error) {
+func (s *Service) Create(ctx context.Context, req dto.IncidentRequest) (dto.IncidentResponse, error) {
 	incident := model.Incident{
         Title: req.Title,
         Latitude: req.Latitude,
@@ -24,12 +24,11 @@ func (s Service) Create(ctx context.Context, req dto.IncidentRequest) (dto.Incid
     return mapper.ToResponseData(incident), nil
 }
 
-func (s Service) Update(ctx context.Context, id int, req dto.IncidentRequest) error {
+func (s *Service) Update(ctx context.Context, id int, req dto.IncidentRequest) error {
     incident, err := s.Repository.GetIncidentByID(id)
     if err != nil {
         return err
     }
-
 
     incident.Title = req.Title
     incident.Latitude = req.Latitude
@@ -40,11 +39,11 @@ func (s Service) Update(ctx context.Context, id int, req dto.IncidentRequest) er
     return s.Repository.UpdateIncident(incident)
 }
 
-func (s Service) Delete(ctx context.Context, id int) error {
+func (s *Service) Delete(ctx context.Context, id int) error {
     return s.Repository.DeleteIncident(id)
 }
 
-func (s Service) GetIncidentByID(ctx context.Context, id int) (*dto.IncidentResponse, error) {
+func (s *Service) GetIncidentByID(ctx context.Context, id int) (*dto.IncidentResponse, error) {
 	incident, err := s.Repository.GetIncidentByID(id)
     if err != nil {
         return nil, err
@@ -54,7 +53,7 @@ func (s Service) GetIncidentByID(ctx context.Context, id int) (*dto.IncidentResp
     return &response, nil
 }
 
-func (s Service) GetAllIncidents(ctx context.Context, searchActive bool) *dto.IncidentListResponse {
+func (s *Service) GetAllIncidents(ctx context.Context, searchActive bool) *dto.IncidentListResponse {
     incidents, err := s.Repository.FindAllIncidents(searchActive)
     if err != nil {
         return &dto.IncidentListResponse{}

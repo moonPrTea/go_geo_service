@@ -98,14 +98,13 @@ func (r Repository) FindAllIncidents(searchActive bool) ([]model.Incident, error
 // find nearest incidents
 func (r Repository) FindNearbyIncidents(latitude, longitude, radius float64) ([]model.Incident, error) {
 	incidentRows, err := r.db.Query(`
-		SELECT id, title, lat, lng, radius, active
-		FROM incidents
-		WHERE active = true 
-		AND ST_DWithin(
-		ST_SetSRID(ST_MakePoint(lng, lat), 4326)::geography,
-		ST_SetSRID(ST_MakePoint($2, $1), 4326)::geography,
-		radius + $3 * 1000
-        )
+	SELECT id, title, lat, lng, radius, active
+	FROM incidents
+	WHERE active = true
+		AND ST_Distance(
+	    	ST_SetSRID(ST_MakePoint(lng, lat), 4326)::geography,
+	    	ST_SetSRID(ST_MakePoint($2, $1), 4326)::geography
+	  ) <= radius + $3 * 1000
 	`, latitude, longitude, radius)
 
 	if err != nil {

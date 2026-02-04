@@ -1,22 +1,8 @@
 package service
 
 import (
-	"github.com/moonPrTea/go_geo_service.git/internal/model"
+	"github.com/moonPrTea/go_geo_service.git/internal/repository"
 )
-
-type Repository interface {
-	CreateIncident(i *model.Incident) error
-	GetIncidentByID(id int) (*model.Incident, error)
-	FindAllIncidents(searchActive bool) ([]model.Incident, error)
-	FindNearbyIncidents(latitude, longitude, radius float64) ([]model.Incident, error)
-	UpdateIncident(i *model.Incident) error
-	DeleteIncident(id int) error
-
-	// unique user_id for the last n minutes
-	GetStats(minutes int) (int, error)
-
-	SaveCheck(userID string, latitude, longitude float64) (*model.LocationChecks, error)
-}
 
 // redis
 type Queue interface {
@@ -25,12 +11,12 @@ type Queue interface {
 
 type Service struct {
 	// data repositories
-	Repository
+	*repository.Repository
 	Queue
 }
 
-func New(repository Repository, queue Queue) Service {
-	return Service{
+func New(repository *repository.Repository, queue Queue) *Service {
+	return &Service{
 		Repository: repository,
 		Queue: queue,
 	}
